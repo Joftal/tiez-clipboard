@@ -428,30 +428,46 @@ fn update_database_with_changes(
     new_content: &str,
     preview: &str,
 ) {
-    let state = app_handle.state::<DbState>();
+    use crate::app_state::SessionHistory;
 
-    if state.repo.update_entry_content(id, new_content, preview).is_ok() {
-        // Sync Session History
-        use crate::app_state::SessionHistory;
+    if id < 0 {
         if let Some(session) = app_handle.try_state::<SessionHistory>() {
             let mut history = session.0.lock().unwrap();
             if let Some(item) = history.iter_mut().find(|i| i.id == id) {
                 item.content = new_content.to_string();
                 item.preview = preview.to_string();
                 item.html_content = None;
-                // If it was rich text, it's now effectively plain text after editing
+                if item.content_type == "rich_text" {
+                    item.content_type = "text".to_string();
+                }
+                let _ = app_handle.emit("clipboard-updated", item.clone());
+                println!("Session item updated and clipboard-updated event emitted for id: {}", id);
+                return;
+            }
+        }
+        let _ = app_handle.emit("clipboard-changed", id);
+        return;
+    }
+
+    let state = app_handle.state::<DbState>();
+
+    if state.repo.update_entry_content(id, new_content, preview).is_ok() {
+        if let Some(session) = app_handle.try_state::<SessionHistory>() {
+            let mut history = session.0.lock().unwrap();
+            if let Some(item) = history.iter_mut().find(|i| i.id == id) {
+                item.content = new_content.to_string();
+                item.preview = preview.to_string();
+                item.html_content = None;
                 if item.content_type == "rich_text" {
                     item.content_type = "text".to_string();
                 }
             }
         }
 
-        // Fetch the updated entry and emit clipboard-updated event with full entry data
         if let Ok(Some(updated_entry)) = state.repo.get_entry_by_id(id) {
             let _ = app_handle.emit("clipboard-updated", updated_entry);
             println!("Database updated and clipboard-updated event emitted for id: {}", id);
         } else {
-            // Fallback to old event if we can't fetch the entry
             let _ = app_handle.emit("clipboard-changed", id);
             println!("Database updated for id: {}", id);
         }
