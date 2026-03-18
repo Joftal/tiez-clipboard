@@ -237,7 +237,9 @@ body.dark-mode.theme-acrylic #root {
 .theme-mica .item-actions:not(.compact) .btn-icon,
 .theme-acrylic .item-actions:not(.compact) .btn-icon,
 body:not(.compact-mode) .theme-mica .item-actions .btn-icon,
-body:not(.compact-mode) .theme-acrylic .item-actions .btn-icon {
+body:not(.compact-mode) .theme-acrylic .item-actions .btn-icon,
+body:not(.compact-mode) .theme-mica .item-meta-right .item-index-badge,
+body:not(.compact-mode) .theme-acrylic .item-meta-right .item-index-badge {
   background: transparent !important;
   box-shadow: none !important;
 }

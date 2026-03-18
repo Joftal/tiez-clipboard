@@ -91,6 +91,7 @@ export const useClipboardItemRenderer = ({
           id={`clipboard-item-${item.id}`}
           key={item.id}
           item={item}
+          displayIndex={index + 1}
           isSelected={isKeyboardMode && index === selectedIndex}
           windowPinned={isWindowPinned}
           isSensitiveHidden={!!isSensitiveHidden}

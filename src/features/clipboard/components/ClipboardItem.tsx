@@ -599,6 +599,7 @@ const getFileIcon = (filePath: string) => {
 
 const ClipboardItem = ({
     item,
+    displayIndex,
     isSelected,
     windowPinned,
     isSensitiveHidden,
@@ -1073,7 +1074,7 @@ const ClipboardItem = ({
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div className="item-meta-right">
                     <div className="item-actions">
                         {(item.tags?.includes('sensitive') || item.tags?.includes('密码') || item.tags?.includes('password')) && (
                             <button
@@ -1128,7 +1129,10 @@ const ClipboardItem = ({
                             <X size={12} />
                         </button>
                     </div>
-                    <div className="app-info" style={{ opacity: 0.6, fontSize: '10px', display: 'flex', gap: '6px', alignItems: 'center' }}>
+                    <span className="btn-icon item-index-badge" aria-hidden="true">
+                        {displayIndex}
+                    </span>
+                    <div className="app-info item-meta-time">
                         <span>{getConciseTime(item.timestamp, language)}</span>
                     </div>
                 </div>
@@ -1487,7 +1491,8 @@ const ClipboardItem = ({
 };
 
 export default memo(ClipboardItem, (prevProps, nextProps) => {
-    return prevProps.isSelected === nextProps.isSelected &&
+    return prevProps.displayIndex === nextProps.displayIndex &&
+        prevProps.isSelected === nextProps.isSelected &&
         prevProps.item.id === nextProps.item.id &&
         prevProps.item.content_type === nextProps.item.content_type &&
         prevProps.item.timestamp === nextProps.item.timestamp &&

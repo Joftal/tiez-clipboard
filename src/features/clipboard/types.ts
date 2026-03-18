@@ -4,6 +4,7 @@ import type { ClipboardEntry, Locale } from "../../shared/types";
 
 export interface ClipboardItemProps {
   item: ClipboardEntry;
+  displayIndex: number;
   isSelected: boolean;
   windowPinned: boolean;
   isSensitiveHidden: boolean;

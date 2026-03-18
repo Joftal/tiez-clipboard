@@ -22,6 +22,35 @@
   min-width: 0;
 }
 
+.item-meta-right{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.item-index-badge{
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  box-shadow: 1px 1px 0 0 var(--shadow-color);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  cursor: default;
+  pointer-events: none;
+}
+
+.item-meta-time{
+  opacity: 0.6;
+  font-size: 10px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
 .app-info{
   display: flex;
   align-items: center;

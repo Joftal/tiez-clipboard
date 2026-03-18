@@ -169,7 +169,7 @@
 }
 
 /* The right side wrapper (Buttons) */
-.history-item.compact .item-meta>div:last-child {
+.history-item.compact .item-meta-right {
     position: absolute;
     top: -8px;
     right: 8px;
@@ -178,11 +178,12 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 0;
     pointer-events: none;
 }
 
 /* Fix for first item buttons being clipped */
-.first-virtual-item .history-item.compact .item-meta>div:last-child {
+.first-virtual-item .history-item.compact .item-meta-right {
     top: -4px !important;
 }
 
@@ -191,11 +192,16 @@
     display: flex !important;
     flex-direction: row !important;
     gap: 4px !important;
+    max-width: 0;
+    overflow: hidden;
+    margin-right: 0;
     opacity: 0;
     visibility: hidden;
     transform: translateY(5px);
-    transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
+    transition: max-width 0.2s cubic-bezier(0.16, 1, 0.3, 1), margin-right 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
     pointer-events: auto;
+    flex-shrink: 0;
+    white-space: nowrap;
 
     /* Position relative for AI dropdown positioning */
     position: relative;
@@ -214,13 +220,16 @@
 }
 
 .history-item.compact:hover .item-actions {
+    max-width: 220px;
+    margin-right: 4px;
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
 }
 
 /* Button Icons - Default/Modern Style */
-.history-item.compact .item-actions .btn-icon {
+.history-item.compact .item-actions .btn-icon,
+.history-item.compact .item-index-badge {
     width: 20px !important;
     height: 20px !important;
     padding: 3px !important;
@@ -236,7 +245,8 @@
 }
 
 /* Dark Mode - Glass effect */
-.dark-mode .history-item.compact .item-actions .btn-icon {
+.dark-mode .history-item.compact .item-actions .btn-icon,
+.dark-mode .history-item.compact .item-index-badge {
     background: rgba(60, 60, 60, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: #fff;
@@ -247,7 +257,11 @@
 body.theme-mica .history-item.compact .item-actions .btn-icon,
 body.theme-acrylic .history-item.compact .item-actions .btn-icon,
 html.theme-mica .history-item.compact .item-actions .btn-icon,
-html.theme-acrylic .history-item.compact .item-actions .btn-icon {
+html.theme-acrylic .history-item.compact .item-actions .btn-icon,
+body.theme-mica .history-item.compact .item-index-badge,
+body.theme-acrylic .history-item.compact .item-index-badge,
+html.theme-mica .history-item.compact .item-index-badge,
+html.theme-acrylic .history-item.compact .item-index-badge {
     background: rgba(255, 255, 255, 0.85) !important;
     border: 1px solid rgba(255, 255, 255, 0.5) !important;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1) !important;
@@ -259,7 +273,11 @@ html.theme-acrylic .history-item.compact .item-actions .btn-icon {
 body.dark-mode.theme-mica .history-item.compact .item-actions .btn-icon,
 body.dark-mode.theme-acrylic .history-item.compact .item-actions .btn-icon,
 html.dark-mode.theme-mica .history-item.compact .item-actions .btn-icon,
-html.dark-mode.theme-acrylic .history-item.compact .item-actions .btn-icon {
+html.dark-mode.theme-acrylic .history-item.compact .item-actions .btn-icon,
+body.dark-mode.theme-mica .history-item.compact .item-index-badge,
+body.dark-mode.theme-acrylic .history-item.compact .item-index-badge,
+html.dark-mode.theme-mica .history-item.compact .item-index-badge,
+html.dark-mode.theme-acrylic .history-item.compact .item-index-badge {
     background: rgba(45, 45, 45, 0.7) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) !important;
@@ -268,7 +286,8 @@ html.dark-mode.theme-acrylic .history-item.compact .item-actions .btn-icon {
 /* Retro/Non-Modern Theme Overrides for Buttons */
 /* Apply mechanical style to all non-modern themes (retro, default, etc.) */
 body:not(.theme-mica):not(.theme-acrylic) .history-item.compact .item-actions .btn-icon,
-body:not(.theme-mica):not(.theme-acrylic) .history-item.compact:hover .item-actions .btn-icon {
+body:not(.theme-mica):not(.theme-acrylic) .history-item.compact:hover .item-actions .btn-icon,
+body:not(.theme-mica):not(.theme-acrylic) .history-item.compact .item-index-badge {
     border-radius: 0 !important;
     border: 2px solid var(--border-dark) !important;
     box-shadow: 2px 2px 0 0 var(--shadow-color) !important;
@@ -276,6 +295,12 @@ body:not(.theme-mica):not(.theme-acrylic) .history-item.compact:hover .item-acti
     color: var(--text-primary) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+}
+
+.history-item.compact .item-index-badge {
+    width: auto !important;
+    min-width: 20px;
+    padding: 0 6px !important;
 }
 
 body:not(.theme-mica):not(.theme-acrylic) .history-item.compact .item-actions .btn-icon:hover,
@@ -423,7 +448,7 @@ body.theme-retro .history-item.compact .ai-options-dropdown button {
 }
 
 /* Hide Timestamp */
-.history-item.compact .app-info:last-child {
+.history-item.compact .item-meta-time {
     display: none !important;
 }
 
